@@ -25,7 +25,6 @@ class CreateUser extends Component {
 		this.validateCreate = this.validateCreate.bind(this);
 	}
 	componentWillMount() {
-		console.log("compWillMount");
 		this.setState({
 			isCreated: false,
 		});

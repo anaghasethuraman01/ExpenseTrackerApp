@@ -22,8 +22,13 @@ class EditUser extends Component {
 		this.firstNameChangeHandler = this.firstNameChangeHandler.bind(this);
 		this.lastNameChangeHandler = this.lastNameChangeHandler.bind(this);
 		this.saveDetails = this.saveDetails.bind(this);
+		this.validateUserUpdate = this.validateUserUpdate.bind(this);
 	}
-	componentWillMount() {}
+	componentWillMount() {
+		this.setState({
+			isCreated: false,
+		});
+	}
 
 	userIdChangeHandler = (e) => {
 		this.setState({
@@ -46,20 +51,39 @@ class EditUser extends Component {
 	saveDetails = (e) => {
 		let errors = {};
 		e.preventDefault();
-		const data = {
-			userId: this.state.userId,
-			firstName: this.state.firstName,
-			lastName: this.state.lastName,
-		};
-		axios.defaults.withCredentials = true;
-		axios.post("http://localhost:3001/updateuser", data).then((response) => {
-			if (response.data == "Success") {
-				const { history } = this.props;
-				history.push("/usertable");
-			}
-		});
+		if (this.validateUserUpdate() == true) {
+			const data = {
+				userId: this.state.userId,
+				firstName: this.state.firstName,
+				lastName: this.state.lastName,
+			};
+			axios.defaults.withCredentials = true;
+			axios.post("http://localhost:3001/updateuser", data).then((response) => {
+				if (response.data == "Success") {
+					const { history } = this.props;
+					history.push("/usertable");
+				}
+			});
+		}
 	};
+	validateUserUpdate = () => {
+		let validationErr = {};
+		let isValid = true;
+		if (this.state.firstName === "" || this.state.firstName === " ") {
+			validationErr["firstName"] = "First Name cannot be Empty!  ";
+			isValid = false;
+		}
+		if (this.state.lastName === "" || this.state.lastName === " ") {
+			validationErr["lastName"] = "Last Name cannot be Empty!  ";
+			isValid = false;
+		}
 
+		this.setState({
+			validationErr: validationErr,
+		});
+
+		return isValid;
+	};
 	render() {
 		let redirectVar = null;
 
@@ -76,6 +100,7 @@ class EditUser extends Component {
 				<br />
 				<div className="container">
 					<form action="http://127.0.0.1:3000/edituser" method="post">
+						<div className="errorMsg">{this.state.validationErr.firstName}</div>
 						<div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.firstNameChangeHandler}
@@ -86,6 +111,7 @@ class EditUser extends Component {
 							/>
 						</div>
 						<br />
+						<div className="errorMsg">{this.state.validationErr.lastName}</div>
 						<div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.lastNameChangeHandler}

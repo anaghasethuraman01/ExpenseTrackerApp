@@ -133,6 +133,7 @@ app.post("/updateexpense", function (req, res) {
 
 	sel_user[0].totalExpense =
 		Number(sel_user[0].totalExpense) - Number(req.body.cost);
+		res.end("Success")
 });
 //Table 3 : Company Table Operations
 app.get("/companydetails", function (req, res) {

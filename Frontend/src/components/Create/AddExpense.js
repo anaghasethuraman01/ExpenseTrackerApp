@@ -12,7 +12,7 @@ class AddExpense extends Component {
 			userName: "",
 			category: "",
 			description: "",
-			cost: '',
+			cost: "",
 			userList: [],
 			isErrMsgNeeded: false,
 			validationErr: {},
@@ -25,6 +25,7 @@ class AddExpense extends Component {
 		this.descChangeHandler = this.descChangeHandler.bind(this);
 		this.costChangeHandler = this.costChangeHandler.bind(this);
 		this.Create = this.Create.bind(this);
+		this.validateExpense = this.validateExpense.bind(this);
 	}
 	componentWillMount() {
 		axios.get("http://localhost:3001/usertabledetails").then((response) => {
@@ -49,45 +50,81 @@ class AddExpense extends Component {
 		this.setState({
 			userName: values[0].value,
 		});
-		console.log(values[0].key, values[0].value);
+		this.setState({ validationErr: "" });
 	};
 
 	categoryChangeHandler = (e) => {
 		this.setState({
 			category: e.target.value,
 		});
+		this.setState({ validationErr: "" });
 	};
 
 	descChangeHandler = (e) => {
 		this.setState({
 			description: e.target.value,
 		});
+		this.setState({ validationErr: "" });
 	};
 
 	costChangeHandler = (e) => {
 		this.setState({
 			cost: e.target.value,
 		});
+		this.setState({ validationErr: "" });
 	};
 
 	Create = (e) => {
 		let errors = {};
 		e.preventDefault();
-		const data = {
-			userId: this.state.userId,
-			userName: this.state.userName,
-			category: this.state.category,
-			description: this.state.description,
-			cost: this.state.cost,
-		};
-		console.log(data);
-		axios.defaults.withCredentials = true;
-		axios.post("http://localhost:3001/createexpense", data).then((response) => {
-			if (response.data == "Success") {
-				const { history } = this.props;
-				history.push("/expensetable");
-			}
+		if (this.validateExpense() == true) {
+			const data = {
+				userId: this.state.userId,
+				userName: this.state.userName,
+				category: this.state.category,
+				description: this.state.description,
+				cost: this.state.cost,
+			};
+			axios.defaults.withCredentials = true;
+			axios
+				.post("http://localhost:3001/createexpense", data)
+				.then((response) => {
+					if (response.data == "Success") {
+						const { history } = this.props;
+						history.push("/expensetable");
+					}
+				});
+		}
+	};
+
+	validateExpense = () => {
+		let validationErr = {};
+		let isValid = true;
+		if (this.state.userName === "" || this.state.userName === " ") {
+			validationErr["userName"] = "Name cannot be Empty!  ";
+			isValid = false;
+		}
+		if (this.state.category === "" || this.state.category === " ") {
+			validationErr["category"] = "Category cannot be Empty!  ";
+			isValid = false;
+		}
+		if (this.state.description === "" || this.state.description === " ") {
+			validationErr["description"] = "Description cannot be Empty!  ";
+			isValid = false;
+		}
+		if (this.state.cost === "") {
+			validationErr["cost"] = "Cost cannot be Empty!";
+			isValid = false;
+		} else if (!this.state.cost.match(/^[0-9]+$/)) {
+			validationErr["cost"] = "Cost contain alphabets";
+			isValid = false;
+		}
+
+		this.setState({
+			validationErr: validationErr,
 		});
+
+		return isValid;
 	};
 
 	render() {
@@ -104,6 +141,7 @@ class AddExpense extends Component {
 				<br />
 				<div className="container">
 					<form action="http://127.0.0.1:3000/createuser" method="post">
+						<div className="errorMsg">{this.state.validationErr.userName}</div>
 						<div style={{ width: "60%", height: "30%" }} className="form-group">
 							<select
 								onChange={(e) => {
@@ -119,6 +157,7 @@ class AddExpense extends Component {
 						</div>
 
 						<br />
+						<div className="errorMsg">{this.state.validationErr.category}</div>
 						<div style={{ width: "30%" }} className="form-group">
 							<select
 								className="form-control"
@@ -136,7 +175,9 @@ class AddExpense extends Component {
 						</div>
 						<br />
 
-						<br />
+						<div className="errorMsg">
+							{this.state.validationErr.description}
+						</div>
 						<div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.descChangeHandler}
@@ -148,6 +189,7 @@ class AddExpense extends Component {
 						</div>
 
 						<br />
+						<div className="errorMsg">{this.state.validationErr.cost}</div>
 						<div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.costChangeHandler}

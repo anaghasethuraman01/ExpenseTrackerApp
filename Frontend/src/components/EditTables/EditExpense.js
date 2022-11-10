@@ -78,32 +78,42 @@ class EditExpense extends Component {
 	updateExpense = (e) => {
 		let errors = {};
 		e.preventDefault();
-		const data = {
-			expId: JSON.parse(localStorage.getItem("expenseDet"))["expid"],
-			userId: this.state.userId,
-			userName: this.state.userName,
-			category: this.state.category,
-			description: this.state.description,
-			cost: this.state.cost,
-		};
-		console.log(data);
-		axios.defaults.withCredentials = true;
-		axios.post("http://localhost:3001/updateexpense", data).then((response) => {
-			if (response.data == "Success") {
-				const { history } = this.props;
-				history.push("/expensetable");
-			}
-		});
+		if (this.validateExpense() == true) {
+			const data = {
+				expId: JSON.parse(localStorage.getItem("expenseDet"))["expid"],
+				userId: this.state.userId,
+				userName: this.state.userName,
+				category: this.state.category,
+				description: this.state.description,
+				cost: this.state.cost,
+			};
+			axios.defaults.withCredentials = true;
+			axios
+				.post("http://localhost:3001/updateexpense", data)
+				.then((response) => {
+					if (response.data == "Success") {
+						const { history } = this.props;
+						history.push("/expensetable");
+					}
+				});
+		}
 	};
 	validateExpense = () => {
 		let validationErr = {};
 		let isValid = true;
-		if (this.state.firstName === "" || this.state.firstName === " ") {
-			validationErr["firstName"] = "First Name cannot be Empty!  ";
+		if (this.state.category === "" || this.state.category === " ") {
+			validationErr["category"] = "Category cannot be Empty!  ";
 			isValid = false;
 		}
-		if (this.state.lastName === "" || this.state.lastName === " ") {
-			validationErr["lastName"] = "Last Name cannot be Empty!  ";
+		if (this.state.description === "" || this.state.description === " ") {
+			validationErr["description"] = "Description cannot be Empty!  ";
+			isValid = false;
+		}
+		if (this.state.cost === "") {
+			validationErr["cost"] = "Cost cannot be Empty!";
+			isValid = false;
+		} else if (!this.state.cost.match(/^[0-9]+$/)) {
+			validationErr["cost"] = "Cost contain alphabets";
 			isValid = false;
 		}
 
@@ -128,6 +138,9 @@ class EditExpense extends Component {
 				<div className="container">
 					<form action="http://127.0.0.1:3000/createuser" method="post">
 						<div style={{ width: "30%" }} className="form-group">
+							<div className="errorMsg">
+								{this.state.validationErr.category}
+							</div>
 							<select
 								className="form-control"
 								name="category"
@@ -144,6 +157,9 @@ class EditExpense extends Component {
 							</select>
 						</div>
 						<br />
+						<div className="errorMsg">
+							{this.state.validationErr.description}
+						</div>
 						<div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.descChangeHandler}
@@ -156,6 +172,7 @@ class EditExpense extends Component {
 						</div>
 
 						<br />
+						<div className="errorMsg">{this.state.validationErr.cost}</div>
 						<div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.costChangeHandler}
