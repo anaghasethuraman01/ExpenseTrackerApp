@@ -5,6 +5,7 @@ var bodyParser = require("body-parser");
 var session = require("express-session");
 var cookieParser = require("cookie-parser");
 var cors = require("cors");
+const e = require("express");
 app.set("view engine", "ejs");
 
 //use cors to allow cross origin resource sharing
@@ -95,7 +96,7 @@ app.get("/expensetabledetails", function (req, res) {
 });
 app.post("/deleteexpense", function (req, res) {
 	//const deleteId = req.body.expId;
-	console.log(req.body);
+	//console.log(req.body);
 	var deletedCost = userExpenses.filter((x) => x.expid == req.body.expId);
 	cost = deletedCost[0].cost;
 	userExpenses = userExpenses.filter((x) => x.expid != req.body.expId);
@@ -103,6 +104,32 @@ app.post("/deleteexpense", function (req, res) {
 	//console.log(user,user[0].totalExpense);
 	user[0].totalExpense = Number(user[0].totalExpense) - Number(cost);
 	res.end(JSON.stringify(userExpenses));
+});
+
+//Table 3 : Company Table Operations
+app.get("/companydetails", function (req, res) {
+	//group based on category - cal total - add table id
+	//create a set
+	var categoryMap = new Map();
+	var companyExpenses = [];
+	userExpenses.map(({ category, cost }) => {
+		if (categoryMap.has(category)) {
+			categoryMap.set(
+				category,
+				Number(categoryMap.get(category)) + Number(cost)
+			);
+		} else {
+			categoryMap.set(category, cost);
+		}
+	});
+
+	companyExpenses = [...categoryMap].map(([category, totalexpense]) => ({
+		category,
+		totalexpense,
+	}));
+	//companyExpenses.push(categoryMap);
+	console.log(companyExpenses);
+	res.end(JSON.stringify(companyExpenses));
 });
 
 app.listen(3001);

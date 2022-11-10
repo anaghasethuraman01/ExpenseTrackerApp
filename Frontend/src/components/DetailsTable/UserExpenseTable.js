@@ -15,6 +15,7 @@ class UserExpenseTable extends Component {
 	componentDidMount() {
 		axios.get("http://localhost:3001/expensetabledetails").then((response) => {
 			//update the state with the response data
+			console.log(response)
 			this.setState({
 				userExpenses: this.state.userExpenses.concat(response.data),
 			});
@@ -40,7 +41,7 @@ class UserExpenseTable extends Component {
 		let details = this.state.userExpenses.map((expense) => {
 			return (
 				<tr>
-					<td>{expense.expid}</td>
+					{/* <td>{expense.expid}</td> */}
 					<td>{expense.userName}</td>
 					<td>{expense.category}</td>
 					<td>{expense.description}</td>
@@ -76,7 +77,7 @@ class UserExpenseTable extends Component {
 					<table className="table">
 						<thead>
 							<tr>
-								<th>Id</th>
+								{/* <th>Id</th> */}
 								<th>User Name</th>
 								<th>Category</th>
 								<th>Description</th>
@@ -93,5 +94,5 @@ class UserExpenseTable extends Component {
 		);
 	}
 }
-//export Home Component
+
 export default UserExpenseTable;

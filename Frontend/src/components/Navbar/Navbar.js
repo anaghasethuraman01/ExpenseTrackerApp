@@ -55,14 +55,14 @@ class Navbar extends Component {
 							<a className="navbar-brand">Expense Tracker App</a>
 						</div>
 						<ul className="nav navbar-nav">
-							<li >
+							<li>
 								<Link to="/usertable">User Details</Link>
 							</li>
 							<li>
 								<Link to="/expensetable">Expense Details</Link>
 							</li>
 							<li>
-								<Link to="/delete">Company Expense Detials</Link>
+								<Link to="/companytable">Company Expense Detials</Link>
 							</li>
 						</ul>
 						{navLogin}

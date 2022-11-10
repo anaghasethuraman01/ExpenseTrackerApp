@@ -89,5 +89,5 @@ class UserTable extends Component {
 		);
 	}
 }
-//export Home Component
+
 export default UserTable;
