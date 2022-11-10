@@ -111,7 +111,6 @@ app.get("/companydetails", function (req, res) {
 	//group based on category - cal total - add table id
 	//create a set
 	var categoryMap = new Map();
-	var companyExpenses = [];
 	userExpenses.map(({ category, cost }) => {
 		if (categoryMap.has(category)) {
 			categoryMap.set(
@@ -127,8 +126,6 @@ app.get("/companydetails", function (req, res) {
 		category,
 		totalexpense,
 	}));
-	//companyExpenses.push(categoryMap);
-	console.log(companyExpenses);
 	res.end(JSON.stringify(companyExpenses));
 });
 
