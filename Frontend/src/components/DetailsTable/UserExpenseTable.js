@@ -40,6 +40,12 @@ class UserExpenseTable extends Component {
 		const { history } = this.props;
 		history.push("/createexpense");
 	};
+	editExpense = (expense) => {
+		
+		localStorage.setItem("expenseDet", JSON.stringify(expense));
+		const { history } = this.props;
+		history.push("/editexpense");
+	};
 	render() {
 		//iterate over books to create a table row
 		let details = this.state.userExpenses.map((expense) => {
@@ -51,7 +57,9 @@ class UserExpenseTable extends Component {
 					<td>{expense.description}</td>
 					<td>{expense.cost}</td>
 					<td>
-						<button>Edit</button>
+						<button onClick={(e) => {
+								this.editExpense(expense);
+							}}>Edit</button>
 					</td>
 					<td>
 						<button

@@ -8,9 +8,9 @@ class EditUser extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			userId: "",
-			firstName: "",
-			lastName: "",
+			userId: JSON.parse(localStorage.getItem("userDet"))["userId"],
+			firstName: JSON.parse(localStorage.getItem("userDet"))["firstName"],
+			lastName: JSON.parse(localStorage.getItem("userDet"))["lastName"],
 			isCreated: false,
 			isErrMsgNeeded: false,
 			validationErr: {},
@@ -18,17 +18,12 @@ class EditUser extends Component {
 		};
 
 		//bind the handlers to this class
-		this.userIdChangeHandler = this.userIdChangeHandler.bind(this);
+
 		this.firstNameChangeHandler = this.firstNameChangeHandler.bind(this);
 		this.lastNameChangeHandler = this.lastNameChangeHandler.bind(this);
-		this.Create = this.Create.bind(this);
+		this.saveDetails = this.saveDetails.bind(this);
 	}
-	componentWillMount() {
-		console.log("compWillMount");
-		this.setState({
-			isCreated: false,
-		});
-	}
+	componentWillMount() {}
 
 	userIdChangeHandler = (e) => {
 		this.setState({
@@ -48,7 +43,7 @@ class EditUser extends Component {
 		});
 	};
 
-	Create = (e) => {
+	saveDetails = (e) => {
 		let errors = {};
 		e.preventDefault();
 		const data = {
@@ -57,20 +52,17 @@ class EditUser extends Component {
 			lastName: this.state.lastName,
 		};
 		axios.defaults.withCredentials = true;
-		axios.post("http://localhost:3001/createuser", data).then((response) => {
+		axios.post("http://localhost:3001/updateuser", data).then((response) => {
 			if (response.data == "Success") {
 				const { history } = this.props;
 				history.push("/usertable");
-			} else {
-				this.setState({
-					message: response.data,
-				});
 			}
 		});
 	};
 
 	render() {
 		let redirectVar = null;
+
 		// if (!cookie.load("cookie")) {
 		// 	redirectVar = <Redirect to="/home" />;
 		// }
@@ -83,24 +75,13 @@ class EditUser extends Component {
 				{/* {redirectVar} */}
 				<br />
 				<div className="container">
-					<form action="http://127.0.0.1:3000/createuser" method="post">
-						<div style={{ width: "30%" }} className="form-group">
-							<input
-								onChange={this.userIdChangeHandler}
-								type="text"
-								className="form-control"
-								name="userId"
-								placeholder="User Id"
-							/>
-						</div>
-						<br />
-
+					<form action="http://127.0.0.1:3000/edituser" method="post">
 						<div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.firstNameChangeHandler}
 								type="text"
 								className="form-control"
-								name="firstName"
+								value={this.state.firstName}
 								placeholder="First Name"
 							/>
 						</div>
@@ -111,6 +92,7 @@ class EditUser extends Component {
 								type="text"
 								className="form-control"
 								name="lastName"
+								value={this.state.lastName}
 								placeholder="Last Name"
 							/>
 						</div>
@@ -120,9 +102,9 @@ class EditUser extends Component {
 							<button
 								className="btn btn-success"
 								type="submit"
-								onClick={this.Create}
+								onClick={this.saveDetails}
 							>
-								Add new user
+								Save
 							</button>
 						</div>
 						<div style={{ color: "#ff0000" }}>

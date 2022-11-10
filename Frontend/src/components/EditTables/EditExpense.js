@@ -4,27 +4,32 @@ import axios from "axios";
 
 import { Redirect } from "react-router";
 
-class AddExpense extends Component {
+class EditExpense extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			userId: "",
-			userName: "",
-			category: "",
-			description: "",
-			cost: '',
+			userId: JSON.parse(localStorage.getItem("expenseDet"))["userId"],
+			category: JSON.parse(localStorage.getItem("expenseDet"))["category"],
+			description: JSON.parse(localStorage.getItem("expenseDet"))[
+				"description"
+			],
+			userName: JSON.parse(localStorage.getItem("expenseDet"))["userName"],
+			cost: JSON.parse(localStorage.getItem("expenseDet"))["cost"],
 			userList: [],
+			isCreated: false,
 			isErrMsgNeeded: false,
 			validationErr: {},
 			message: null,
 		};
 
 		//bind the handlers to this class
+
 		this.userNameChangeHandler = this.userNameChangeHandler.bind(this);
 		this.categoryChangeHandler = this.categoryChangeHandler.bind(this);
 		this.descChangeHandler = this.descChangeHandler.bind(this);
 		this.costChangeHandler = this.costChangeHandler.bind(this);
-		this.Create = this.Create.bind(this);
+		this.updateExpense = this.updateExpense.bind(this);
+		this.validateExpense = this.validateExpense.bind(this);
 	}
 	componentWillMount() {
 		axios.get("http://localhost:3001/usertabledetails").then((response) => {
@@ -70,10 +75,11 @@ class AddExpense extends Component {
 		});
 	};
 
-	Create = (e) => {
+	updateExpense = (e) => {
 		let errors = {};
 		e.preventDefault();
 		const data = {
+			expId: JSON.parse(localStorage.getItem("expenseDet"))["expid"],
 			userId: this.state.userId,
 			userName: this.state.userName,
 			category: this.state.category,
@@ -82,14 +88,31 @@ class AddExpense extends Component {
 		};
 		console.log(data);
 		axios.defaults.withCredentials = true;
-		axios.post("http://localhost:3001/createexpense", data).then((response) => {
+		axios.post("http://localhost:3001/updateexpense", data).then((response) => {
 			if (response.data == "Success") {
 				const { history } = this.props;
 				history.push("/expensetable");
 			}
 		});
 	};
+	validateExpense = () => {
+		let validationErr = {};
+		let isValid = true;
+		if (this.state.firstName === "" || this.state.firstName === " ") {
+			validationErr["firstName"] = "First Name cannot be Empty!  ";
+			isValid = false;
+		}
+		if (this.state.lastName === "" || this.state.lastName === " ") {
+			validationErr["lastName"] = "Last Name cannot be Empty!  ";
+			isValid = false;
+		}
 
+		this.setState({
+			validationErr: validationErr,
+		});
+
+		return isValid;
+	};
 	render() {
 		// if (!cookie.load("cookie")) {
 		// 	redirectVar = <Redirect to="/home" />;
@@ -104,25 +127,11 @@ class AddExpense extends Component {
 				<br />
 				<div className="container">
 					<form action="http://127.0.0.1:3000/createuser" method="post">
-						<div style={{ width: "60%", height: "30%" }} className="form-group">
-							<select
-								onChange={(e) => {
-									this.userNameChangeHandler(e);
-								}}
-							>
-								{this.state.userList.map((uname) => (
-									<option key={uname.key} value={uname.key}>
-										{uname.value}
-									</option>
-								))}
-							</select>
-						</div>
-
-						<br />
 						<div style={{ width: "30%" }} className="form-group">
 							<select
 								className="form-control"
 								name="category"
+								value={this.state.category}
 								onChange={(e) => {
 									this.categoryChangeHandler(e);
 								}}
@@ -135,14 +144,13 @@ class AddExpense extends Component {
 							</select>
 						</div>
 						<br />
-
-						<br />
 						<div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.descChangeHandler}
 								type="text"
 								className="form-control"
 								name="description"
+								value={this.state.description}
 								placeholder="Description"
 							/>
 						</div>
@@ -154,6 +162,7 @@ class AddExpense extends Component {
 								type="text"
 								className="form-control"
 								name="cost"
+								value={this.state.cost}
 								placeholder="Cost"
 							/>
 						</div>
@@ -162,9 +171,9 @@ class AddExpense extends Component {
 							<button
 								className="btn btn-success"
 								type="submit"
-								onClick={this.Create}
+								onClick={this.updateExpense}
 							>
-								Add new user
+								Save
 							</button>
 						</div>
 						<div style={{ color: "#ff0000" }}>
@@ -177,4 +186,4 @@ class AddExpense extends Component {
 	}
 }
 
-export default AddExpense;
+export default EditExpense;

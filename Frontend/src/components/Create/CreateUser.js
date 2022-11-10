@@ -22,6 +22,7 @@ class CreateUser extends Component {
 		this.firstNameChangeHandler = this.firstNameChangeHandler.bind(this);
 		this.lastNameChangeHandler = this.lastNameChangeHandler.bind(this);
 		this.Create = this.Create.bind(this);
+		this.validateCreate = this.validateCreate.bind(this);
 	}
 	componentWillMount() {
 		console.log("compWillMount");
@@ -51,24 +52,43 @@ class CreateUser extends Component {
 	Create = (e) => {
 		let errors = {};
 		e.preventDefault();
-		const data = {
-			userId: this.state.userId,
-			firstName: this.state.firstName,
-			lastName: this.state.lastName,
-		};
-		axios.defaults.withCredentials = true;
-		axios.post("http://localhost:3001/createuser", data).then((response) => {
-			if (response.data == "Success") {
-				const { history } = this.props;
-				history.push("/usertable");
-			} else {
-				this.setState({
-					message: response.data,
-				});
-			}
-		});
+		if (this.validateCreate() == true) {
+			const data = {
+				userId: this.state.userId,
+				firstName: this.state.firstName,
+				lastName: this.state.lastName,
+			};
+			axios.defaults.withCredentials = true;
+			axios.post("http://localhost:3001/createuser", data).then((response) => {
+				if (response.data == "Success") {
+					const { history } = this.props;
+					history.push("/usertable");
+				} else {
+					this.setState({
+						message: response.data,
+					});
+				}
+			});
+		}
 	};
+	validateCreate = () => {
+		let validationErr = {};
+		let isValid = true;
+		if (this.state.firstName === "" || this.state.firstName === " ") {
+			validationErr["firstName"] = "First Name cannot be Empty!  ";
+			isValid = false;
+		}
+		if (this.state.lastName === "" || this.state.lastName === " ") {
+			validationErr["lastName"] = "Last Name cannot be Empty!  ";
+			isValid = false;
+		}
 
+		this.setState({
+			validationErr: validationErr,
+		});
+
+		return isValid;
+	};
 	render() {
 		let redirectVar = null;
 		// if (!cookie.load("cookie")) {
@@ -84,7 +104,7 @@ class CreateUser extends Component {
 				<br />
 				<div className="container">
 					<form action="http://127.0.0.1:3000/createuser" method="post">
-						<div style={{ width: "30%" }} className="form-group">
+						{/* <div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.userIdChangeHandler}
 								type="text"
@@ -93,8 +113,8 @@ class CreateUser extends Component {
 								placeholder="User Id"
 							/>
 						</div>
-						<br />
-
+						<br /> */}
+						<div className="errorMsg">{this.state.validationErr.firstName}</div>
 						<div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.firstNameChangeHandler}
@@ -105,6 +125,7 @@ class CreateUser extends Component {
 							/>
 						</div>
 						<br />
+						<div className="errorMsg">{this.state.validationErr.lastName}</div>
 						<div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.lastNameChangeHandler}

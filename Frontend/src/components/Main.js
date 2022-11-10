@@ -6,6 +6,7 @@ import UserExpenseTable from "./DetailsTable/UserExpenseTable";
 import CompanyExpenseTable from "./DetailsTable/CompanyExpenseTable";
 import CreateUser from "./Create/CreateUser";
 import EditUser from "./EditTables/EditUser";
+import EditExpense from "./EditTables/EditExpense";
 import Navbar from "./Navbar/Navbar";
 import AddExpense from "./Create/AddExpense";
 //Create a Main Component
@@ -21,6 +22,7 @@ class Main extends Component {
 				<Route path="/edituser" component={EditUser} />
 				<Route path="/expensetable" component={UserExpenseTable} />
 				<Route path="/createexpense" component={AddExpense} />
+				<Route path="/editexpense" component={EditExpense} />
 				<Route path="/companytable" component={CompanyExpenseTable} />
 			</div>
 		);

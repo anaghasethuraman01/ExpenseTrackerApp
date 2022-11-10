@@ -57,6 +57,7 @@ app.post("/login", (req, res) => {
 });
 //Table 1 : User Table Operations
 app.post("/createuser", (req, res) => {
+	req.body["userId"] = Math.floor(Math.random() * 100);
 	req.body["totalExpense"] = 0;
 	let users_id = users.filter((x) => x.userId == req.body.userId);
 	if (users_id.length == 0) {
@@ -78,6 +79,19 @@ app.post("/deleteuser", function (req, res) {
 	userExpenses = userExpenses.filter((x) => x.userId != deleteId.userId);
 	//console.log(users)
 	res.end(JSON.stringify(users));
+});
+app.post("/updateuser", function (req, res) {
+	const userId = req.body.userId;
+	let sel_users = users.filter((x) => x.userId == userId);
+	sel_users[0].firstName = req.body.firstName;
+	sel_users[0].lastName = req.body.lastName;
+	let exptable = userExpenses.filter((x) => x.userId == userId);
+	console.log(exptable);
+	exptable.map((item) => {
+		item.userName = req.body.firstName + " " + req.body.lastName;
+	});
+
+	res.end("Success");
 });
 
 //Table 2 : Expense Table Operations
@@ -104,8 +118,22 @@ app.post("/deleteexpense", function (req, res) {
 	//console.log(user,user[0].totalExpense);
 	user[0].totalExpense = Number(user[0].totalExpense) - Number(cost);
 	res.end(JSON.stringify(userExpenses));
+	res.end("Success");
 });
+app.post("/updateexpense", function (req, res) {
+	const expId = req.body.expId;
+	const userId = req.body.userId;
+	let sel_expense = userExpenses.filter((x) => x.expid == expId);
+	sel_expense[0].category = req.body.category;
+	sel_expense[0].description = req.body.description;
+	sel_user = users.filter((x) => x.userId == userId);
+	sel_user[0].totalExpense =
+		Number(sel_user[0].totalExpense) - Number(sel_expense[0].cost);
+	sel_expense[0].cost = req.body.cost;
 
+	sel_user[0].totalExpense =
+		Number(sel_user[0].totalExpense) - Number(req.body.cost);
+});
 //Table 3 : Company Table Operations
 app.get("/companydetails", function (req, res) {
 	//group based on category - cal total - add table id

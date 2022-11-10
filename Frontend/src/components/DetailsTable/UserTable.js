@@ -3,13 +3,13 @@ import "../../App.css";
 import axios from "axios";
 import cookie from "react-cookies";
 import { Redirect } from "react-router";
+import EditUser from "../EditTables/EditUser";
 
 class UserTable extends Component {
 	constructor() {
 		super();
 		this.state = {
 			users: [],
-			disable: true,
 		};
 	}
 	//get the books data from backend
@@ -38,38 +38,29 @@ class UserTable extends Component {
 		const { history } = this.props;
 		history.push("/createuser");
 	};
-	editUser = () => {
-		this.setState({ disable: false });
+	editUser = (user) => {
+		console.log(user.firstName);
+		localStorage.setItem("userDet", JSON.stringify(user));
+		const { history } = this.props;
+		history.push("/edituser");
 	};
 	render() {
 		//iterate over books to create a table row
 		let details = this.state.users.map((user) => {
 			return (
 				<tr>
-					<td>
-						<input
-							value={user.userId}
-							type="text"
-							disabled={this.state.disable}
-						></input>
-					</td>
-					<td>
-						<input
-							value={user.firstName}
-							type="text"
-							disabled={this.state.disable}
-						></input>
-					</td>
-					<td>
-						<input
-							value={user.lastName}
-							type="text"
-							disabled={this.state.disable}
-						></input>
-					</td>
+					{/* <td>{user.userId}</td> */}
+					<td>{user.firstName}</td>
+					<td>{user.lastName}</td>
 					<td>{user.totalExpense}</td>
 					<td>
-						<button onClick={this.editUser}>Edit</button>
+						<button
+							onClick={(e) => {
+								this.editUser(user);
+							}}
+						>
+							Edit
+						</button>
 					</td>
 					<td>
 						<button
@@ -97,7 +88,7 @@ class UserTable extends Component {
 					<table className="table">
 						<thead>
 							<tr>
-								<th>User Id</th>
+								{/* <th>User Id</th> */}
 								<th>First Name</th>
 								<th>Last Name</th>
 								<th>Total Expenses</th>
