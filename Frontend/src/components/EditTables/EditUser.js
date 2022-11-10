@@ -61,6 +61,8 @@ class EditUser extends Component {
 			axios.post("http://localhost:3001/updateuser", data).then((response) => {
 				if (response.data == "Success") {
 					const { history } = this.props;
+					localStorage.clear();
+					localStorage.setItem("Login", "Yes");
 					history.push("/usertable");
 				}
 			});

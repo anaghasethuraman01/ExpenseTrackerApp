@@ -49,6 +49,7 @@ class Login extends Component {
 			.then((response) => {
 				if (response.data == "Success") {
 					const { history } = this.props;
+					localStorage.setItem("Login", "Yes");
 					history.push("/usertable");
 				} else {
 					this.setState({

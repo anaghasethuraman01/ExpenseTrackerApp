@@ -16,7 +16,12 @@ app.use(
 	session({
 		secret: "leandata",
 		resave: false, // Forces the session to be saved back to the session store, even if the session was never modified during the request
-		saveUninitialized: false, // Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
+		saveUninitialized: false,
+
+		cookie: {
+			maxAge: 1000 * 60 * 60 * 24 * 30,
+		},
+		// Force to save uninitialized session to db. A session is uninitialized when it is new but not modified.
 	})
 );
 
@@ -132,8 +137,8 @@ app.post("/updateexpense", function (req, res) {
 	sel_expense[0].cost = req.body.cost;
 
 	sel_user[0].totalExpense =
-		Number(sel_user[0].totalExpense) - Number(req.body.cost);
-		res.end("Success")
+		Number(sel_user[0].totalExpense) + Number(req.body.cost);
+	res.end("Success");
 });
 //Table 3 : Company Table Operations
 app.get("/companydetails", function (req, res) {

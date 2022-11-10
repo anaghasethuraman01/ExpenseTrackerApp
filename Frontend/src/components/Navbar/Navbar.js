@@ -11,12 +11,12 @@ class Navbar extends Component {
 	}
 	//handle logout to destroy the cookie
 	handleLogout = () => {
-		cookie.remove("cookie", { path: "/" });
+		localStorage.clear();
 	};
 	render() {
 		//if Cookie is set render Logout Button
 		let navLogin = null;
-		if (cookie.load("cookie")) {
+		if (localStorage.getItem("Login") == "Yes") {
 			console.log("Able to read cookie");
 			navLogin = (
 				<ul className="nav navbar-nav navbar-right">
@@ -41,11 +41,11 @@ class Navbar extends Component {
 			);
 		}
 		let redirectVar = null;
-		// if (cookie.load("cookie")) {
-		//   redirectVar = <Redirect to="/home" />;
-		// } else {
-		//   redirectVar = <Redirect to="/login" />;
-		// }
+		if (localStorage.getItem("Login") == "Yes") {
+			redirectVar = <Redirect to="/usertable" />;
+		} else {
+			redirectVar = <Redirect to="/login" />;
+		}
 		return (
 			<div>
 				{redirectVar}

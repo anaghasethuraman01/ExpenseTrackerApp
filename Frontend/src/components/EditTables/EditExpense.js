@@ -93,6 +93,8 @@ class EditExpense extends Component {
 				.then((response) => {
 					if (response.data == "Success") {
 						const { history } = this.props;
+						localStorage.clear();
+						localStorage.setItem("Login", "Yes");
 						history.push("/expensetable");
 					}
 				});

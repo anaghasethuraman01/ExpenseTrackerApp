@@ -41,13 +41,17 @@ class UserExpenseTable extends Component {
 		history.push("/createexpense");
 	};
 	editExpense = (expense) => {
-		
 		localStorage.setItem("expenseDet", JSON.stringify(expense));
 		const { history } = this.props;
 		history.push("/editexpense");
 	};
 	render() {
-		//iterate over books to create a table row
+		let redirectVar = null;
+		if (localStorage.getItem("Login") == "Yes") {
+			redirectVar = <Redirect to="/expensetable" />;
+		} else {
+			redirectVar = <Redirect to="/login" />;
+		}
 		let details = this.state.userExpenses.map((expense) => {
 			return (
 				<tr>
@@ -57,9 +61,13 @@ class UserExpenseTable extends Component {
 					<td>{expense.description}</td>
 					<td>{expense.cost}</td>
 					<td>
-						<button onClick={(e) => {
+						<button
+							onClick={(e) => {
 								this.editExpense(expense);
-							}}>Edit</button>
+							}}
+						>
+							Edit
+						</button>
 					</td>
 					<td>
 						<button
@@ -74,13 +82,13 @@ class UserExpenseTable extends Component {
 			);
 		});
 		//if not logged in go to login page
-		let redirectVar = null;
+
 		// if(!cookie.load('cookie')){
 		//     redirectVar = <Redirect to= "/login"/>
 		// }
 		return (
 			<div>
-				{/* {redirectVar} */}
+				{redirectVar}
 				<div className="container">
 					<h2>User Expense Details</h2>
 					<button onClick={this.createExpense}>Add New Expense</button>

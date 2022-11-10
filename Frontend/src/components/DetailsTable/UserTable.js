@@ -45,6 +45,7 @@ class UserTable extends Component {
 		history.push("/edituser");
 	};
 	render() {
+		
 		//iterate over books to create a table row
 		let details = this.state.users.map((user) => {
 			return (
@@ -75,10 +76,13 @@ class UserTable extends Component {
 			);
 		});
 		//if not logged in go to login page
+		
 		let redirectVar = null;
-		// if(!cookie.load('cookie')){
-		//     redirectVar = <Redirect to= "/login"/>
-		// }
+		if (localStorage.getItem("Login") == "Yes") {
+			redirectVar = <Redirect to="/usertable" />;
+		} else {
+			redirectVar = <Redirect to="/login" />;
+		}
 		return (
 			<div>
 				{redirectVar}

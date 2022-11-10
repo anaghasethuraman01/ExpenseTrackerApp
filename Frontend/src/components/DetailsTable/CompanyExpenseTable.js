@@ -14,7 +14,7 @@ class CompanyExpenseTable extends Component {
 	//get the books data from backend
 	componentDidMount() {
 		axios.get("http://localhost:3001/companydetails").then((response) => {
-			console.log(response)
+			console.log(response);
 			//update the state with the response data
 			this.setState({
 				companyExpenses: this.state.companyExpenses.concat(response.data),
@@ -34,14 +34,15 @@ class CompanyExpenseTable extends Component {
 				</tr>
 			);
 		});
-		//if not logged in go to login page
 		let redirectVar = null;
-		// if(!cookie.load('cookie')){
-		//     redirectVar = <Redirect to= "/login"/>
-		// }
+		if (localStorage.getItem("Login") == "Yes") {
+			redirectVar = <Redirect to="/usertable" />;
+		} else {
+			redirectVar = <Redirect to="/login" />;
+		}
 		return (
 			<div>
-				{/* {redirectVar} */}
+				{redirectVar}
 				<div className="container">
 					<h2>Company Expense Details</h2>
 
