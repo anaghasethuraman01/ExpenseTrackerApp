@@ -114,8 +114,12 @@ class EditExpense extends Component {
 		if (this.state.cost === "") {
 			validationErr["cost"] = "Cost cannot be Empty!";
 			isValid = false;
-		} else if (!this.state.cost.match(/^[0-9]+$/)) {
-			validationErr["cost"] = "Cost contain alphabets";
+		} else if (
+			!this.state.cost.match(/^[0-9]+$/) ||
+			this.state.cost > Number.MAX_SAFE_INTEGER ||
+			this.state.cost < Number.MIN_VALUE
+		) {
+			validationErr["cost"] = "Cost should be valid";
 			isValid = false;
 		}
 
@@ -143,6 +147,7 @@ class EditExpense extends Component {
 							<div className="errorMsg">
 								{this.state.validationErr.category}
 							</div>
+							Category:{" "}
 							<select
 								className="form-control"
 								name="category"
@@ -162,6 +167,7 @@ class EditExpense extends Component {
 						<div className="errorMsg">
 							{this.state.validationErr.description}
 						</div>
+						Description:{" "}
 						<div style={{ width: "30%" }} className="form-group">
 							<input
 								onChange={this.descChangeHandler}
@@ -172,10 +178,10 @@ class EditExpense extends Component {
 								placeholder="Description"
 							/>
 						</div>
-
 						<br />
 						<div className="errorMsg">{this.state.validationErr.cost}</div>
 						<div style={{ width: "30%" }} className="form-group">
+							Cost:{" "}
 							<input
 								onChange={this.costChangeHandler}
 								type="text"

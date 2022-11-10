@@ -115,6 +115,7 @@ class CreateUser extends Component {
 						<br /> */}
 						<div className="errorMsg">{this.state.validationErr.firstName}</div>
 						<div style={{ width: "30%" }} className="form-group">
+							First Name :{" "}
 							<input
 								onChange={this.firstNameChangeHandler}
 								type="text"
@@ -126,6 +127,7 @@ class CreateUser extends Component {
 						<br />
 						<div className="errorMsg">{this.state.validationErr.lastName}</div>
 						<div style={{ width: "30%" }} className="form-group">
+							Last Name :
 							<input
 								onChange={this.lastNameChangeHandler}
 								type="text"
@@ -134,8 +136,11 @@ class CreateUser extends Component {
 								placeholder="Last Name"
 							/>
 						</div>
-
 						<br />
+						<div style={{ width: "30%" }} className="form-group">
+							Total Expense :
+							<input disabled type="text" value="0" className="form-control" />
+						</div>
 						<div style={{ width: "30%" }}>
 							<button
 								className="btn btn-success"

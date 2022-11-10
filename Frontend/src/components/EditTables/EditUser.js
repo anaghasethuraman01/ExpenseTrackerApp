@@ -11,6 +11,7 @@ class EditUser extends Component {
 			userId: JSON.parse(localStorage.getItem("userDet"))["userId"],
 			firstName: JSON.parse(localStorage.getItem("userDet"))["firstName"],
 			lastName: JSON.parse(localStorage.getItem("userDet"))["lastName"],
+			totalExpense: JSON.parse(localStorage.getItem("userDet"))["totalExpense"],
 			isCreated: false,
 			isErrMsgNeeded: false,
 			validationErr: {},
@@ -87,15 +88,6 @@ class EditUser extends Component {
 		return isValid;
 	};
 	render() {
-		let redirectVar = null;
-
-		// if (!cookie.load("cookie")) {
-		// 	redirectVar = <Redirect to="/home" />;
-		// }
-		// if (cookie.load("cookie") && this.state.isCreated === true) {
-		// 	redirectVar = <Redirect to="/home" />;
-		// }
-
 		return (
 			<div>
 				{/* {redirectVar} */}
@@ -104,6 +96,7 @@ class EditUser extends Component {
 					<form action="http://127.0.0.1:3000/edituser" method="post">
 						<div className="errorMsg">{this.state.validationErr.firstName}</div>
 						<div style={{ width: "30%" }} className="form-group">
+							First Name:
 							<input
 								onChange={this.firstNameChangeHandler}
 								type="text"
@@ -115,6 +108,7 @@ class EditUser extends Component {
 						<br />
 						<div className="errorMsg">{this.state.validationErr.lastName}</div>
 						<div style={{ width: "30%" }} className="form-group">
+							Last Name:{" "}
 							<input
 								onChange={this.lastNameChangeHandler}
 								type="text"
@@ -125,6 +119,16 @@ class EditUser extends Component {
 							/>
 						</div>
 
+						<br />
+						<div style={{ width: "30%" }} className="form-group">
+							Total Expense:{" "}
+							<input
+								disabled
+								type="text"
+								className="form-control"
+								value={this.state.totalExpense}
+							/>
+						</div>
 						<br />
 						<div style={{ width: "30%" }}>
 							<button

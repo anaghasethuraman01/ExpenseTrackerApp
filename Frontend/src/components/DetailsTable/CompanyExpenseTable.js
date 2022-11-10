@@ -36,7 +36,7 @@ class CompanyExpenseTable extends Component {
 		});
 		let redirectVar = null;
 		if (localStorage.getItem("Login") == "Yes") {
-			redirectVar = <Redirect to="/usertable" />;
+			redirectVar = <Redirect to="/companytable" />;
 		} else {
 			redirectVar = <Redirect to="/login" />;
 		}

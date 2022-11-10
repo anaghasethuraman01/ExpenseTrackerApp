@@ -115,8 +115,12 @@ class AddExpense extends Component {
 		if (this.state.cost === "") {
 			validationErr["cost"] = "Cost cannot be Empty!";
 			isValid = false;
-		} else if (!this.state.cost.match(/^[0-9]+$/)) {
-			validationErr["cost"] = "Cost contain alphabets";
+		} else if (
+			!this.state.cost.match(/^[0-9]+$/) ||
+			this.state.cost > Number.MAX_SAFE_INTEGER ||
+			this.state.cost < Number.MIN_VALUE
+		) {
+			validationErr["cost"] = "Cost should be valid";
 			isValid = false;
 		}
 
@@ -143,6 +147,7 @@ class AddExpense extends Component {
 					<form action="http://127.0.0.1:3000/createuser" method="post">
 						<div className="errorMsg">{this.state.validationErr.userName}</div>
 						<div style={{ width: "60%", height: "30%" }} className="form-group">
+							User Name:{" "}
 							<select
 								onChange={(e) => {
 									this.userNameChangeHandler(e);
@@ -159,6 +164,7 @@ class AddExpense extends Component {
 						<br />
 						<div className="errorMsg">{this.state.validationErr.category}</div>
 						<div style={{ width: "30%" }} className="form-group">
+							Category:{" "}
 							<select
 								className="form-control"
 								name="category"
@@ -179,6 +185,7 @@ class AddExpense extends Component {
 							{this.state.validationErr.description}
 						</div>
 						<div style={{ width: "30%" }} className="form-group">
+							Description:{" "}
 							<input
 								onChange={this.descChangeHandler}
 								type="text"
@@ -191,6 +198,7 @@ class AddExpense extends Component {
 						<br />
 						<div className="errorMsg">{this.state.validationErr.cost}</div>
 						<div style={{ width: "30%" }} className="form-group">
+							Cost:{" "}
 							<input
 								onChange={this.costChangeHandler}
 								type="text"
@@ -206,7 +214,7 @@ class AddExpense extends Component {
 								type="submit"
 								onClick={this.Create}
 							>
-								Add new user
+								Add new user expense
 							</button>
 						</div>
 						<div style={{ color: "#ff0000" }}>
