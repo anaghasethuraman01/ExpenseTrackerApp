@@ -1,0 +1,97 @@
+import React, { Component } from "react";
+import "../../App.css";
+import axios from "axios";
+import cookie from "react-cookies";
+import { Redirect } from "react-router";
+
+class UserExpenseTable extends Component {
+	constructor() {
+		super();
+		this.state = {
+			userExpenses: [],
+		};
+	}
+	//get the books data from backend
+	componentDidMount() {
+		axios.get("http://localhost:3001/expensetabledetails").then((response) => {
+			//update the state with the response data
+			this.setState({
+				userExpenses: this.state.userExpenses.concat(response.data),
+			});
+		});
+	}
+	deleteExpense = (expid, userId) => {
+		//e.preventDefault();
+		const data = {
+			expId: expid,
+			userId: userId,
+		};
+		console.log(data);
+		axios.defaults.withCredentials = true;
+		axios.post("http://localhost:3001/deleteexpense", data).then((response) => {
+			console.log(response.data);
+			this.setState({
+				userExpenses: response.data,
+			});
+		});
+	};
+	render() {
+		//iterate over books to create a table row
+		let details = this.state.userExpenses.map((expense) => {
+			return (
+				<tr>
+					<td>{expense.expid}</td>
+					<td>{expense.userName}</td>
+					<td>{expense.category}</td>
+					<td>{expense.description}</td>
+					<td>{expense.cost}</td>
+					<td>
+						<button>Edit</button>
+					</td>
+					<td>
+						<button
+							onClick={(e) => {
+								this.deleteExpense(expense.expid, expense.userId);
+							}}
+						>
+							Delete
+						</button>
+					</td>
+				</tr>
+			);
+		});
+		//if not logged in go to login page
+		let redirectVar = null;
+		// if(!cookie.load('cookie')){
+		//     redirectVar = <Redirect to= "/login"/>
+		// }
+		return (
+			<div>
+				{/* {redirectVar} */}
+				<div className="container">
+					<h2>User Expense Details</h2>
+					<button>
+						<a href="/createexpense">Add New Expense</a>
+					</button>
+					<table className="table">
+						<thead>
+							<tr>
+								<th>Id</th>
+								<th>User Name</th>
+								<th>Category</th>
+								<th>Description</th>
+								<th>Cost</th>
+							</tr>
+						</thead>
+						<tbody>
+							{/*Display the Tbale row based on data recieved*/}
+							{details}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		);
+	}
+}
+//export Home Component
+export default UserExpenseTable;
