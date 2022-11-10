@@ -9,6 +9,7 @@ class UserTable extends Component {
 		super();
 		this.state = {
 			users: [],
+			disable: true,
 		};
 	}
 	//get the books data from backend
@@ -33,17 +34,42 @@ class UserTable extends Component {
 			});
 		});
 	};
+	createUser = () => {
+		const { history } = this.props;
+		history.push("/createuser");
+	};
+	editUser = () => {
+		this.setState({ disable: false });
+	};
 	render() {
 		//iterate over books to create a table row
 		let details = this.state.users.map((user) => {
 			return (
 				<tr>
-					<td>{user.userId}</td>
-					<td>{user.firstName}</td>
-					<td>{user.lastName}</td>
+					<td>
+						<input
+							value={user.userId}
+							type="text"
+							disabled={this.state.disable}
+						></input>
+					</td>
+					<td>
+						<input
+							value={user.firstName}
+							type="text"
+							disabled={this.state.disable}
+						></input>
+					</td>
+					<td>
+						<input
+							value={user.lastName}
+							type="text"
+							disabled={this.state.disable}
+						></input>
+					</td>
 					<td>{user.totalExpense}</td>
 					<td>
-						<button>Edit</button>
+						<button onClick={this.editUser}>Edit</button>
 					</td>
 					<td>
 						<button
@@ -67,9 +93,7 @@ class UserTable extends Component {
 				{redirectVar}
 				<div className="container">
 					<h2>User Details Table</h2>
-					<button>
-						<a href="/createuser">Add new User</a>
-					</button>
+					<button onClick={this.createUser}>Add new User</button>
 					<table className="table">
 						<thead>
 							<tr>

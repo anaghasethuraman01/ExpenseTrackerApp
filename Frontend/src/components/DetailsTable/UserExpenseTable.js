@@ -15,7 +15,7 @@ class UserExpenseTable extends Component {
 	componentDidMount() {
 		axios.get("http://localhost:3001/expensetabledetails").then((response) => {
 			//update the state with the response data
-			console.log(response)
+			console.log(response);
 			this.setState({
 				userExpenses: this.state.userExpenses.concat(response.data),
 			});
@@ -35,6 +35,10 @@ class UserExpenseTable extends Component {
 				userExpenses: response.data,
 			});
 		});
+	};
+	createExpense = () => {
+		const { history } = this.props;
+		history.push("/createexpense");
 	};
 	render() {
 		//iterate over books to create a table row
@@ -71,9 +75,7 @@ class UserExpenseTable extends Component {
 				{/* {redirectVar} */}
 				<div className="container">
 					<h2>User Expense Details</h2>
-					<button>
-						<a href="/createexpense">Add New Expense</a>
-					</button>
+					<button onClick={this.createExpense}>Add New Expense</button>
 					<table className="table">
 						<thead>
 							<tr>
