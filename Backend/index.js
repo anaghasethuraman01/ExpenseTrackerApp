@@ -164,4 +164,4 @@ app.get("/companydetails", function (req, res) {
 });
 
 app.listen(3001);
-//console.log("Server Listening on port 3001");
+console.log("Server Listening on port 3001");
