@@ -1,0 +1,7 @@
+Backend/package-lock.json
+Backend/node_modules
+Frontend/node_modules
+Frontend/package-lock.json
+Frontend/.DS_Store
+.DS_Store
+
