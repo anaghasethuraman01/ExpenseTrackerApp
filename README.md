@@ -2,7 +2,7 @@
 Take Home Assignment
 
 ### Steps to run the application
-
+Kindly Note : The Application has a login Page and the credentials are Username : Admin, password : Admin
 #### Front End
 
 1. Clone the repository's front end folder "Frontend" into any machine having node.js installed on it.
@@ -20,3 +20,5 @@ Take Home Assignment
 #### Launch the application
 
 1. Open the browser and navigate to localhost (127.0.0.1:3000) to find the landing page.
+
+2. The Application has a login Page and the credentials are Username : Admin, password : Admin
