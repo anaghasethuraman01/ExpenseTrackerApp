@@ -19,4 +19,4 @@ Take Home Assignment
 
 #### Launch the application
 
-1. Open the browser and navigate to localhost  with Port (127.0.0.1:3000) to find the landing page.
+1. Open the browser and navigate to localhost (127.0.0.1:3000) to find the landing page.
