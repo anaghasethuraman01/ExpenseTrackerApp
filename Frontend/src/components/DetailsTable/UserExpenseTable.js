@@ -11,7 +11,7 @@ class UserExpenseTable extends Component {
 			userExpenses: [],
 		};
 	}
-	//get the books data from backend
+
 	componentDidMount() {
 		axios.get("http://localhost:3001/expensetabledetails").then((response) => {
 			//update the state with the response data
@@ -81,11 +81,7 @@ class UserExpenseTable extends Component {
 				</tr>
 			);
 		});
-		//if not logged in go to login page
 
-		// if(!cookie.load('cookie')){
-		//     redirectVar = <Redirect to= "/login"/>
-		// }
 		return (
 			<div>
 				{redirectVar}
@@ -99,7 +95,7 @@ class UserExpenseTable extends Component {
 								<th>User Name</th>
 								<th>Category</th>
 								<th>Description</th>
-								<th>Cost</th>
+								<th>Cost($)</th>
 							</tr>
 						</thead>
 						<tbody>

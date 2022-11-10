@@ -14,7 +14,6 @@ class Navbar extends Component {
 		localStorage.clear();
 	};
 	render() {
-		//if Cookie is set render Logout Button
 		let navLogin = null;
 		if (localStorage.getItem("Login") == "Yes") {
 			console.log("Able to read cookie");

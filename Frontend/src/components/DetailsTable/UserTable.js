@@ -12,7 +12,7 @@ class UserTable extends Component {
 			users: [],
 		};
 	}
-	//get the books data from backend
+	
 	componentDidMount() {
 		axios.get("http://localhost:3001/usertabledetails").then((response) => {
 			//update the state with the response data
@@ -46,7 +46,6 @@ class UserTable extends Component {
 	};
 	render() {
 		
-		//iterate over books to create a table row
 		let details = this.state.users.map((user) => {
 			return (
 				<tr>
@@ -95,7 +94,7 @@ class UserTable extends Component {
 								{/* <th>User Id</th> */}
 								<th>First Name</th>
 								<th>Last Name</th>
-								<th>Total Expenses</th>
+								<th>Total Expenses($)</th>
 							</tr>
 						</thead>
 						<tbody>

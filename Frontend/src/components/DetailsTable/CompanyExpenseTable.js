@@ -11,7 +11,7 @@ class CompanyExpenseTable extends Component {
 			companyExpenses: [],
 		};
 	}
-	//get the books data from backend
+
 	componentDidMount() {
 		axios.get("http://localhost:3001/companydetails").then((response) => {
 			console.log(response);
@@ -23,7 +23,6 @@ class CompanyExpenseTable extends Component {
 	}
 
 	render() {
-		//iterate over books to create a table row
 		let details = this.state.companyExpenses.map((expense) => {
 			return (
 				<tr>
@@ -51,13 +50,10 @@ class CompanyExpenseTable extends Component {
 							<tr>
 								{/* <th>Id</th> */}
 								<th>Category</th>
-								<th>Total Expense</th>
+								<th>Total Expense($)</th>
 							</tr>
 						</thead>
-						<tbody>
-							{/*Display the Tbale row based on data recieved*/}
-							{details}
-						</tbody>
+						<tbody>{details}</tbody>
 					</table>
 				</div>
 			</div>

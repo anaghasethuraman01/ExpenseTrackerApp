@@ -121,7 +121,7 @@ class EditUser extends Component {
 
 						<br />
 						<div style={{ width: "30%" }} className="form-group">
-							Total Expense:{" "}
+							Total Expense($):{" "}
 							<input
 								disabled
 								type="text"

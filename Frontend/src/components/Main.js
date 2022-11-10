@@ -9,7 +9,6 @@ import EditUser from "./EditTables/EditUser";
 import EditExpense from "./EditTables/EditExpense";
 import Navbar from "./Navbar/Navbar";
 import AddExpense from "./Create/AddExpense";
-//Create a Main Component
 class Main extends Component {
 	render() {
 		return (

@@ -143,6 +143,15 @@ class EditExpense extends Component {
 				<br />
 				<div className="container">
 					<form action="http://127.0.0.1:3000/createuser" method="post">
+						User Name:{" "}
+						<div style={{ width: "30%" }} className="form-group">
+							<input
+								type="text"
+								className="form-control"
+								value={this.state.userName}
+								disabled
+							/>
+						</div>
 						<div style={{ width: "30%" }} className="form-group">
 							<div className="errorMsg">
 								{this.state.validationErr.category}
@@ -181,7 +190,7 @@ class EditExpense extends Component {
 						<br />
 						<div className="errorMsg">{this.state.validationErr.cost}</div>
 						<div style={{ width: "30%" }} className="form-group">
-							Cost:{" "}
+							Cost($):{" "}
 							<input
 								onChange={this.costChangeHandler}
 								type="text"
