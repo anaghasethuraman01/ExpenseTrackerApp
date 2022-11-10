@@ -96,9 +96,12 @@ app.get("/expensetabledetails", function (req, res) {
 app.post("/deleteexpense", function (req, res) {
 	//const deleteId = req.body.expId;
 	console.log(req.body);
+	var deletedCost = userExpenses.filter((x) => x.expid == req.body.expId);
+	cost = deletedCost[0].cost;
 	userExpenses = userExpenses.filter((x) => x.expid != req.body.expId);
-	var user = userExpenses.filter((x) => x.userId == req.body.userId);
-	user[0].totalExpense = Number(user[0].totalExpense) - Number(req.body.cost);
+	var user = users.filter((x) => x.userId == req.body.userId);
+	//console.log(user,user[0].totalExpense);
+	user[0].totalExpense = Number(user[0].totalExpense) - Number(cost);
 	res.end(JSON.stringify(userExpenses));
 });
 
